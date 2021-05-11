@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "axios": "^0.21.1",
+    "date-fns": "^2.21.3",
+    "nodemailer": "^6.6.0",
+    "open": "^8.0.8"
+  }
+}
