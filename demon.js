@@ -1,6 +1,8 @@
 const open = require("open");
 const axios = require("axios");
 const { format } = require("date-fns");
+const notifier = require('node-notifier');
+const player = require('play-sound')(opts = {})
 
 function log(...msg) {
   console.log(new Date().toISOString(), ...msg);
@@ -14,11 +16,48 @@ function updateLinkDate(link) {
   return link.replace(/\d{4}-\d{2}-\d{2}/, format(new Date(), "yyyy-MM-dd"));
 }
 
+function hasSuitableDate(data) {
+  try {
+    if (data.total > 0) {
+      log("More than 0 availabilities")
+      return true;
+    }
+
+    if (data.next_slot && data.next_slot.startsWith("2021-05")) {
+      log("Availability this month")
+      return true;
+    }
+
+    if (data.availabilities) {
+      for (availability of data.availabilities) {
+        if (availability.slots.length > 0) {
+          log("More than one slot")
+          return true;
+        }
+      }
+    }
+  } catch(e) {
+    error(e)
+    return false;
+  }
+}
+
+function notify() {
+  console.log('\u0007');
+
+  notifier.notify({
+    title: 'Vacination',
+    message: 'Appointment!'
+  });
+
+  player.play('./bell-ring-01.wav', (err) => {if (error) {console.error(err)}})
+}
+
 function observe(xhrLink, bookingLink) {
   const reschedule = (time) => {
     setTimeout(
       () => observe(xhrLink, bookingLink),
-      Math.ceil(time || Math.random() * 20000)
+      Math.ceil(time || Math.random() * 5000)
     );
   };
 
@@ -26,13 +65,16 @@ function observe(xhrLink, bookingLink) {
     .get(updateLinkDate(xhrLink))
     .then((response) => {
       try {
+        log('For: ', bookingLink);
         log(response.data);
 
-        const total = response.data.total;
-        log("total", typeof total, total);
-        if (total > 0) {
+        const isSuitable = hasSuitableDate(response.data);
+        if (isSuitable) {
           log("success");
+
           open(bookingLink);
+
+          notify();
 
           // 2 Minutes break
           reschedule(1000 * 60 * 2);
@@ -48,6 +90,55 @@ function observe(xhrLink, bookingLink) {
       error(e);
       reschedule();
     });
+}
+
+let recentlyOpened = false;
+function observeImpfstoff() {
+  if (!recentlyOpened) {
+    axios.get('https://api.impfstoff.link/?robot=1').then(response => {
+      response.data.stats.forEach(stat => {
+        if (stat.open === false) {
+          return;
+        }
+
+        let isOk = false;
+        switch(stat.id) {
+          case 'arena':
+            isOk = true;
+            open('https://www.doctolib.de/institut/berlin/ciz-berlin-berlin?pid=practice-158431');
+            break;
+          case 'messe':
+            isOk = true;
+            open('https://www.doctolib.de/institut/berlin/ciz-berlin-berlin?pid=practice-158434');
+            break;
+          case 'velodrom':
+            isOk = true;
+            open('https://www.doctolib.de/institut/berlin/ciz-berlin-berlin?pid=practice-158435');
+            break;
+          // case 'tegel':
+          //   open('https://www.doctolib.de/institut/berlin/ciz-berlin-berlin?pid=practice-158436');
+          //   break;
+          default:
+            return;
+        }
+
+        if (!isOk) {
+          return;
+        }
+
+        log("impfstuff success", stat.id);
+
+        recentlyOpened = true;
+        setTimeout(() => {
+          recentlyOpened = false;
+        }, 60000);
+
+        notify();
+      })
+    }).catch(error);
+  }
+
+  setTimeout(observeImpfstoff, 1500);
 }
 
 const data = [
@@ -76,3 +167,6 @@ const data = [
 data.forEach((links) => {
   observe(links.xhrLink, links.bookingLink);
 });
+
+
+observeImpfstoff();

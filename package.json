@@ -2,7 +2,9 @@
   "dependencies": {
     "axios": "^0.21.1",
     "date-fns": "^2.21.3",
+    "node-notifier": "^9.0.1",
     "nodemailer": "^6.6.0",
-    "open": "^8.0.8"
+    "open": "^8.0.8",
+    "play-sound": "^1.1.3"
   }
 }
