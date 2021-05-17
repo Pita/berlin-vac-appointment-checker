@@ -1,8 +1,8 @@
 const open = require("open");
 const axios = require("axios");
 const { format } = require("date-fns");
-const notifier = require('node-notifier');
-const player = require('play-sound')(opts = {})
+const notifier = require("node-notifier");
+const player = require("play-sound")((opts = {}));
 
 function log(...msg) {
   console.log(new Date().toISOString(), ...msg);
@@ -16,61 +16,73 @@ function updateLinkDate(link) {
   return link.replace(/\d{4}-\d{2}-\d{2}/, format(new Date(), "yyyy-MM-dd"));
 }
 
-function hasSuitableDate(data) {
+async function hasSuitableDate(data, xhrLink) {
   try {
     if (data.total > 0) {
-      log("More than 0 availabilities")
+      log("More than 0 availabilities");
       return true;
     }
 
     if (data.next_slot && data.next_slot.startsWith("2021-05")) {
-      log("Availability this month")
-      return true;
+      const newData = (
+        await axios.get(xhrLink.replace(/\d{4}-\d{2}-\d{2}/, data.next_slot))
+      ).data;
+
+      log("further checking for specific later date", xhrLink);
+
+      for (availability of newData.availabilities) {
+        if (availability.slots.length > 0) {
+          log("More than one slot when requesting for new Date");
+          return true;
+        }
+      }
     }
 
     if (data.availabilities) {
       for (availability of data.availabilities) {
         if (availability.slots.length > 0) {
-          log("More than one slot")
+          log("More than one slot");
           return true;
         }
       }
     }
-  } catch(e) {
-    error(e)
+  } catch (e) {
+    error(e);
     return false;
   }
 }
 
 function notify() {
-  console.log('\u0007');
+  console.log("\u0007");
 
   notifier.notify({
-    title: 'Vacination',
-    message: 'Appointment!'
+    title: "Vacination",
+    message: "Appointment!",
   });
 
-  player.play('./bell-ring-01.wav', (err) => {if (error) {console.error(err)}})
+  player.play("./bell-ring-01.wav", (err) => {
+    if (error) {
+      console.error(err);
+    }
+  });
 }
 
 function observe(xhrLink, bookingLink) {
   const reschedule = (time) => {
     setTimeout(
       () => observe(xhrLink, bookingLink),
-      Math.ceil(time || Math.random() * 5000)
+      Math.ceil(time || Math.random() * 1000)
     );
   };
 
+  log("checking directly");
   axios
     .get(updateLinkDate(xhrLink))
-    .then((response) => {
+    .then(async (response) => {
       try {
-        log('For: ', bookingLink);
-        log(response.data);
-
-        const isSuitable = hasSuitableDate(response.data);
+        const isSuitable = await hasSuitableDate(response.data, xhrLink);
         if (isSuitable) {
-          log("success");
+          log("direct success", response.data, bookingLink);
 
           open(bookingLink);
 
@@ -95,47 +107,71 @@ function observe(xhrLink, bookingLink) {
 let recentlyOpened = false;
 function observeImpfstoff() {
   if (!recentlyOpened) {
-    axios.get('https://api.impfstoff.link/?robot=1').then(response => {
-      response.data.stats.forEach(stat => {
-        if (stat.open === false) {
-          return;
-        }
+    log("checking impfstoff.link");
 
-        let isOk = false;
-        switch(stat.id) {
-          case 'arena':
-            isOk = true;
-            open('https://www.doctolib.de/institut/berlin/ciz-berlin-berlin?pid=practice-158431');
-            break;
-          case 'messe':
-            isOk = true;
-            open('https://www.doctolib.de/institut/berlin/ciz-berlin-berlin?pid=practice-158434');
-            break;
-          case 'velodrom':
-            isOk = true;
-            open('https://www.doctolib.de/institut/berlin/ciz-berlin-berlin?pid=practice-158435');
-            break;
-          // case 'tegel':
-          //   open('https://www.doctolib.de/institut/berlin/ciz-berlin-berlin?pid=practice-158436');
-          //   break;
-          default:
+    axios
+      .get("https://api.impfstoff.link/?robot=1")
+      .then((response) => {
+        response.data.stats.forEach((stat) => {
+          if (stat.open === false) {
             return;
-        }
+          }
 
-        if (!isOk) {
-          return;
-        }
+          let isOk = false;
+          switch (stat.id) {
+            case "arena":
+              isOk = true;
+              open(
+                "https://www.doctolib.de/institut/berlin/ciz-berlin-berlin?pid=practice-158431"
+              );
+              break;
+            case "tempelhof":
+              isOk = true;
+              open(
+                "https://www.doctolib.de/institut/berlin/ciz-berlin-berlin?pid=practice-158433"
+              );
+              break;
+            case "messe":
+              isOk = true;
+              open(
+                "https://www.doctolib.de/institut/berlin/ciz-berlin-berlin?pid=practice-158434"
+              );
+              break;
+            case "velodrom":
+              isOk = true;
+              open(
+                "https://www.doctolib.de/institut/berlin/ciz-berlin-berlin?pid=practice-158435"
+              );
+              break;
+            case "tegel":
+              open(
+                "https://www.doctolib.de/institut/berlin/ciz-berlin-berlin?pid=practice-158436"
+              );
+              break;
+            case "erika":
+              open(
+                "https://www.doctolib.de/institut/berlin/ciz-berlin-berlin?pid=practice-158437"
+              );
+              break;
+            default:
+              return;
+          }
 
-        log("impfstuff success", stat.id);
+          if (!isOk) {
+            return;
+          }
 
-        recentlyOpened = true;
-        setTimeout(() => {
-          recentlyOpened = false;
-        }, 60000);
+          log("impfstuff success", stat.id);
 
-        notify();
+          recentlyOpened = true;
+          setTimeout(() => {
+            recentlyOpened = false;
+          }, 60000);
+
+          notify();
+        });
       })
-    }).catch(error);
+      .catch(error);
   }
 
   setTimeout(observeImpfstoff, 1500);
@@ -167,6 +203,5 @@ const data = [
 data.forEach((links) => {
   observe(links.xhrLink, links.bookingLink);
 });
-
 
 observeImpfstoff();
