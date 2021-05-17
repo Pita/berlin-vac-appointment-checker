@@ -144,11 +144,13 @@ function observeImpfstoff() {
               );
               break;
             case "tegel":
+              isOk = true;
               open(
                 "https://www.doctolib.de/institut/berlin/ciz-berlin-berlin?pid=practice-158436"
               );
               break;
             case "erika":
+              isOk = true;
               open(
                 "https://www.doctolib.de/institut/berlin/ciz-berlin-berlin?pid=practice-158437"
               );
