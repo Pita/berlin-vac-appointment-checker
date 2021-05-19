@@ -193,6 +193,18 @@ function observeImpfstoff() {
 }
 
 const data = [
+  /*
+    Comment back in the places you want to be checked
+
+    bookingLink: the doctolib link where a human can book an appointment
+    xhrLink: the link to doctolib's api where booking availabilty gets checked.
+             You can find this link in the debugger console of your browser. The date will get automatically corrected to the current date
+
+    secondShotXhrLink: Some places want you to book a second shoot immediatly, if they don't have a slot for a second appointment, you can't book at all.
+                       So in this cases it makes sense to check this second appointment as well
+  */
+
+
   // {
   //   xhrLink: `https://www.doctolib.de/availabilities.json?start_date=2021-05-11&visit_motive_ids=2495719&agenda_ids=457591-457443-457477-457487-457405-457414-457511-457594-457432-397846-457408-457421-457435-457489-457563-457567-457569-457439-457493-457453-457406-457416-457418-457426-457400-457404-457409-457419-457420-457427-457448-457483-457425-457428-457415-457504-457597-457566-457412-457457-457436-457463-397845-397844-457411-457497-457424-457429-457430-457442-457470-404659-457596-457407-457410-457593&insurance_sector=public&practice_ids=158434&destroy_temporary=true&limit=4`,
   //   secondShotXhrLink: `https://www.doctolib.de/second_shot_availabilities.json?start_date=2021-06-28&visit_motive_ids=2495719&agenda_ids=457591-457443-457477-457487-457405-457414-457511-457594-457432-397846-457408-457421-457435-457489-457563-457567-457569-457439-457493-457453-457406-457416-457418-457426-457400-457404-457409-457419-457420-457427-457448-457483-457425-457428-457415-457504-457597-457566-457412-457457-457436-457463-397845-397844-457411-457497-457424-457429-457430-457442-457470-404659-457596-457407-457410-457593&first_slot=2021-05-19T13%3A30%3A00.000%2B02%3A00&insurance_sector=public&practice_ids=158434&limit=4`,
@@ -220,10 +232,12 @@ const data = [
   }
 ];
 
-// second shot xhr:
-
 data.forEach((links) => {
   observe(links.xhrLink, links.bookingLink);
 });
 
+// Comment back in to observe impfstoff.link for availabilities.
 // observeImpfstoff();
+
+console.log("Started checking periodically...")
+console.log("Just keep it running, it will play a sound and open a browser when an appointment opens up")
