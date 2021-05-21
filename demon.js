@@ -4,6 +4,34 @@ const { format, add } = require("date-fns");
 const notifier = require("node-notifier");
 const player = require("play-sound")((opts = {}));
 
+const lookupTable = new Map([
+  [
+    "arena",
+    "https://www.doctolib.de/institut/berlin/ciz-berlin-berlin?pid=practice-158431",
+  ],
+  [
+    "tempelhof",
+    "https://www.doctolib.de/institut/berlin/ciz-berlin-berlin?pid=practice-158433",
+  ],
+  [
+    "messe",
+    "https://www.doctolib.de/institut/berlin/ciz-berlin-berlin?pid=practice-158434",
+  ],
+  [
+    "velodrom",
+    "https://www.doctolib.de/institut/berlin/ciz-berlin-berlin?pid=practice-158435",
+  ],
+  [
+    "tegel",
+    "https://www.doctolib.de/institut/berlin/ciz-berlin-berlin?pid=practice-158436",
+  ],
+  [
+    "erika",
+    "https://www.doctolib.de/institut/berlin/ciz-berlin-berlin?pid=practice-158437",
+  ],
+]);
+const rateLimit = 1000 * 20;
+
 function log(...msg) {
   console.log(new Date().toISOString(), ...msg);
 }
@@ -17,12 +45,15 @@ function updateLinkDate(link) {
 }
 
 function updateLinkDatePfizer(link) {
-  return link.replace(/\d{4}-\d{2}-\d{2}/, format(add(new Date(), {days: 42}), "yyyy-MM-dd"));
+  return link.replace(
+    /\d{4}-\d{2}-\d{2}/,
+    format(add(new Date(), { days: 42 }), "yyyy-MM-dd")
+  );
 }
 
 async function hasSuitableDate(data, xhrLink, secondShotXhrLink) {
   try {
-    if (data.total > 0) {
+    if (data?.total) {
       log("More than 0 availabilities");
 
       if (secondShotXhrLink) {
@@ -30,13 +61,13 @@ async function hasSuitableDate(data, xhrLink, secondShotXhrLink) {
           await axios.get(updateLinkDatePfizer(secondShotXhrLink))
         ).data;
 
-        log('second shot data', secondShotData);
+        log("second shot data", secondShotData);
 
         return secondShotData.total !== 0;
       }
     }
 
-    if (data.next_slot && data.next_slot.startsWith("2021-05")) {
+    if (data?.next_slot?.startsWith("2021-05")) {
       const newData = (
         await axios.get(xhrLink.replace(/\d{4}-\d{2}-\d{2}/, data.next_slot))
       ).data;
@@ -51,7 +82,7 @@ async function hasSuitableDate(data, xhrLink, secondShotXhrLink) {
       }
     }
 
-    if (data.availabilities) {
+    if (data?.availabilities?.length) {
       for (availability of data.availabilities) {
         if (availability.slots.length > 0) {
           log("More than one slot");
@@ -60,9 +91,9 @@ async function hasSuitableDate(data, xhrLink, secondShotXhrLink) {
       }
     }
   } catch (e) {
-    error(e);
-    return false;
+    throw e;
   }
+  return false;
 }
 
 function notify() {
@@ -73,27 +104,30 @@ function notify() {
     message: "Appointment!",
   });
 
-  player.play("./bell-ring-01.wav", (err) => {
+  player.play("./bell-ring-01.wav", function (err) {
     if (error) {
-      console.error(err);
+      error(err);
     }
   });
 }
 
 function observe(xhrLink, bookingLink, secondShotXhrLink) {
-  const reschedule = (time) => {
-    setTimeout(
-      () => observe(xhrLink, bookingLink),
-      Math.ceil(time || Math.random() * 1000)
-    );
-  };
+  function reschedule(time) {
+    setTimeout(function () {
+      observe(xhrLink, bookingLink);
+    }, Math.ceil(time || Math.random() * 1000));
+  }
 
-  // log("checking directly");
+  log("checking directly");
   axios
     .get(updateLinkDate(xhrLink))
-    .then(async (response) => {
+    .then(async function (response) {
       try {
-        const isSuitable = await hasSuitableDate(response.data, xhrLink, secondShotXhrLink);
+        const isSuitable = await hasSuitableDate(
+          response?.data,
+          xhrLink,
+          secondShotXhrLink
+        );
         if (isSuitable) {
           log("direct success", response.data, bookingLink);
 
@@ -109,77 +143,37 @@ function observe(xhrLink, bookingLink, secondShotXhrLink) {
       } catch (e) {
         error(e);
       }
-      reschedule();
+      reschedule(rateLimit);
     })
-    .catch((e) => {
+    .catch(function (e) {
       error(e);
-      reschedule();
+      reschedule(rateLimit);
     });
 }
 
 let recentlyOpened = false;
 function observeImpfstoff() {
   if (!recentlyOpened) {
-    // log("checking impfstoff.link");
+    log("checking impfstoff.link");
 
     axios
       .get("https://api.impfstoff.link/?robot=1")
-      .then((response) => {
-        response.data.stats.forEach((stat) => {
+      .then(function (response) {
+        response?.data?.stats.forEach(function (stat) {
           if (stat.open === false) {
             return;
           }
 
-          let isOk = false;
-          switch (stat.id) {
-            case "arena":
-              isOk = true;
-              open(
-                "https://www.doctolib.de/institut/berlin/ciz-berlin-berlin?pid=practice-158431"
-              );
-              break;
-            case "tempelhof":
-              isOk = true;
-              open(
-                "https://www.doctolib.de/institut/berlin/ciz-berlin-berlin?pid=practice-158433"
-              );
-              break;
-            case "messe":
-              isOk = true;
-              open(
-                "https://www.doctolib.de/institut/berlin/ciz-berlin-berlin?pid=practice-158434"
-              );
-              break;
-            case "velodrom":
-              isOk = true;
-              open(
-                "https://www.doctolib.de/institut/berlin/ciz-berlin-berlin?pid=practice-158435"
-              );
-              break;
-            case "tegel":
-              isOk = true;
-              open(
-                "https://www.doctolib.de/institut/berlin/ciz-berlin-berlin?pid=practice-158436"
-              );
-              break;
-            case "erika":
-              isOk = true;
-              open(
-                "https://www.doctolib.de/institut/berlin/ciz-berlin-berlin?pid=practice-158437"
-              );
-              break;
-            default:
-              return;
-          }
-
-          if (!isOk) {
+          if (lookupTable.has(stat?.id)) {
+            open(lookupTable.get(stat.id));
+          } else {
             return;
           }
 
           log("impfstuff success", stat.id);
 
           recentlyOpened = true;
-          setTimeout(() => {
+          setTimeout(function () {
             recentlyOpened = false;
           }, 60000);
 
@@ -189,7 +183,7 @@ function observeImpfstoff() {
       .catch(error);
   }
 
-  setTimeout(observeImpfstoff, 1500);
+  setTimeout(observeImpfstoff, rateLimit);
 }
 
 const data = [
@@ -203,7 +197,6 @@ const data = [
     secondShotXhrLink: Some places want you to book a second shoot immediatly, if they don't have a slot for a second appointment, you can't book at all.
                        So in this cases it makes sense to check this second appointment as well
   */
-
 
   // {
   //   xhrLink: `https://www.doctolib.de/availabilities.json?start_date=2021-05-11&visit_motive_ids=2495719&agenda_ids=457591-457443-457477-457487-457405-457414-457511-457594-457432-397846-457408-457421-457435-457489-457563-457567-457569-457439-457493-457453-457406-457416-457418-457426-457400-457404-457409-457419-457420-457427-457448-457483-457425-457428-457415-457504-457597-457566-457412-457457-457436-457463-397845-397844-457411-457497-457424-457429-457430-457442-457470-404659-457596-457407-457410-457593&insurance_sector=public&practice_ids=158434&destroy_temporary=true&limit=4`,
@@ -229,15 +222,17 @@ const data = [
   {
     xhrLink: `https://www.doctolib.de/availabilities.json?start_date=2021-05-18&visit_motive_ids=2836657&agenda_ids=469719&insurance_sector=public&practice_ids=162056&limit=4`,
     bookingLink: `https://www.doctolib.de/krankenhaus/berlin/gkh-havelhoehe-impfzentrum`,
-  }
+  },
 ];
 
-data.forEach((links) => {
+data.forEach(function (links) {
   observe(links.xhrLink, links.bookingLink);
 });
 
 // Comment back in to observe impfstoff.link for availabilities.
 // observeImpfstoff();
 
-console.log("Started checking periodically...")
-console.log("Just keep it running, it will play a sound and open a browser when an appointment opens up")
+log("Started checking periodically...");
+log(
+  "Just keep it running, it will play a sound and open a browser when an appointment opens up"
+);
