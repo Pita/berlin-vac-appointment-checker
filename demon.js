@@ -30,7 +30,7 @@ const lookupTable = new Map([
     "https://www.doctolib.de/institut/berlin/ciz-berlin-berlin?pid=practice-158437",
   ],
 ]);
-const rateLimit = 1000 * 20;
+const rateLimit = 1000 * 2;
 
 function log(...msg) {
   console.log(new Date().toISOString(), ...msg);
