@@ -186,6 +186,58 @@ function observeImpfstoff() {
   setTimeout(observeImpfstoff, rateLimit);
 }
 
+let availabilities = false
+function observePunctumMedico() {
+  if (!availabilities) {
+    log('checking Punctum Medico')
+
+    FormData = require('form-data')
+    const formData = new FormData();
+    formData.append('uniqueident', '5a72efb4d3aec');
+
+    axios.post(
+      'https://onlinetermine.zollsoft.de/includes/searchTermine_app_feature.php',
+      formData,
+      {
+        headers: formData.getHeaders()
+      }
+    ).then(function (response) {
+      response?.data?.termine.forEach(function (appt) {
+        if (!appt.length) {
+          return;
+        }
+
+        const matchingAppt = appt.some((i) => {
+          if (!i) {
+            return
+          }
+
+          const lowercase = i?.toLowerCase()
+
+          // check for Johnson & Johnson
+          return lowercase.includes('jan') || lowercase.includes('john')
+        })
+
+        if (!matchingAppt) {
+          return;
+        }
+
+        log("Punctum Medico success", appt);
+
+        availabilities = true;
+        setTimeout(function () {
+          availabilities = false;
+        }, 60000);
+
+        notify();
+      });
+    })
+    .catch(error);
+  }
+
+  setTimeout(observePunctumMedico, rateLimit);
+}
+
 const data = [
   /*
     Comment back in the places you want to be checked
@@ -219,10 +271,10 @@ const data = [
   //   bookingLink: `https://www.doctolib.de/institut/berlin/ciz-berlin-berlin?pid=practice-158436`,
   //   xhrLink: `https://www.doctolib.de/availabilities.json?start_date=2021-05-11&visit_motive_ids=2495719&agenda_ids=457379-457323-457329-457334-457346-457253-457255-457256-457294-457317-457335-457399-457514-457350-457326-457330-457254-457267-457303-457275-457276-457281-457289-457300-457301-457302-457307-457309-457314-457331-457388-457515-457338-457263-457266-457277-457286-457287-457308-457320-457343-457268-457500-397841-457512-457382-457385-457324-457460-457513-457285-457392-457395-457251-397843-457252-457264-457271-457279-457290-457292-457318-457358-457327-457341-457293-457250-457305-457377-457396-457333-457349-457265-457313-457316-457295-457390-457363-457282-457297-397842-457336-457337-457413-404656-457510&insurance_sector=public&practice_ids=158436&destroy_temporary=true&limit=4`,
   // },
-  {
-    xhrLink: `https://www.doctolib.de/availabilities.json?start_date=2021-05-18&visit_motive_ids=2836657&agenda_ids=469719&insurance_sector=public&practice_ids=162056&limit=4`,
-    bookingLink: `https://www.doctolib.de/krankenhaus/berlin/gkh-havelhoehe-impfzentrum`,
-  },
+  // {
+  //   xhrLink: `https://www.doctolib.de/availabilities.json?start_date=2021-05-18&visit_motive_ids=2836657&agenda_ids=469719&insurance_sector=public&practice_ids=162056&limit=4`,
+  //   bookingLink: `https://www.doctolib.de/krankenhaus/berlin/gkh-havelhoehe-impfzentrum`,
+  // },
 ];
 
 data.forEach(function (links) {
@@ -231,6 +283,9 @@ data.forEach(function (links) {
 
 // Comment back in to observe impfstoff.link for availabilities.
 // observeImpfstoff();
+
+// Comment back in order to observe Punctum Medico
+// observePunctumMedico();
 
 log("Started checking periodically...");
 log(
