@@ -37,7 +37,7 @@ function log(...msg) {
 }
 
 function error(msg) {
-  console.error(new Date().toISOString(), msg.errno, msg.code, msg.config.url);
+  console.error(new Date().toISOString(), msg.errno, msg.code, msg?.config?.url);
 }
 
 function updateLinkDate(link) {
@@ -105,7 +105,7 @@ function notify() {
   });
 
   player.play("./bell-ring-01.wav", function (err) {
-    if (error) {
+    if (err) {
       error(err);
     }
   });
