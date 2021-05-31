@@ -119,7 +119,7 @@ function observe(xhrLink, bookingLink, secondShotXhrLink, offset = 0) {
     );
   };
 
-  console.log("checking directly", bookingLink);
+  log("checking directly", bookingLink);
 
   axios
     .get(updateLinkDate(xhrLink))
@@ -161,7 +161,6 @@ function observeImpfstoff() {
     axios
       .get("https://api.impfstoff.link/?robot=1")
       .then(function (response) {
-        console.log("####   checking...");
 
         response?.data?.stats.forEach(function (stat) {
           if (stat.open === false) {
