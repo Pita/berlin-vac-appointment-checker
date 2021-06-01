@@ -177,7 +177,7 @@ async function hasSuitableDate(
       }
     }
   } catch (e) {
-    console.error(e);
+    error(e);
   }
   return false;
 }
