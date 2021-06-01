@@ -6,6 +6,5 @@
     "lib": ["es2015"],
     "strict": true,
     "esModuleInterop": true
-  },
-  "files": ["demon.ts"]
+  }
 }
