@@ -93,6 +93,21 @@ async function hasSuitableDate(data, xhrLink, secondShotXhrLink) {
       }
     }
 
+    if (data?.next_slot) {
+      const newData = (
+        await axios.get(xhrLink.replace(/\d{4}-\d{2}-\d{2}/, data.next_slot))
+      ).data;
+
+      log("further checking for specific later date", xhrLink);
+
+      for (availability of newData.availabilities) {
+        if (availability.slots.length > 0) {
+          log("More than one slot when requesting for new Date");
+          return true;
+        }
+      }
+    }
+
     if (data?.availabilities?.length) {
       for (availability of data.availabilities) {
         if (availability.slots.length > 0) {
