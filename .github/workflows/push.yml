@@ -16,3 +16,5 @@ jobs:
         run: npm run typecheck
       - name: Eslint check
         run: npm run lint
+      - name: Prettier check
+        run: npm run prettier:check
