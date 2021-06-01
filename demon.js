@@ -337,7 +337,7 @@ const data = [
 let offset = 0;
 data.forEach((links) => {
   offset = offset + 100;
-  observe(links.xhrLink, links.bookingLink, offset);
+  observe(links.xhrLink, links.bookingLink, links.secondShotXhrLink, offset);
 });
 
 // Comment out to disable checking impfstoff.link for availabilities.
