@@ -10,7 +10,8 @@
   },
   "scripts": {
     "start": "ts-node src/demon.ts",
-    "typecheck": "tsc"
+    "typecheck": "tsc",
+    "lint": "eslint src"
   },
   "engines": {
     "node": ">=14"

@@ -14,3 +14,5 @@ jobs:
         run: npm install
       - name: Typescript check
         run: npm run typecheck
+      - name: Eslint check
+        run: npm run lint

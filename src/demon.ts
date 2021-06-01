@@ -177,7 +177,7 @@ async function hasSuitableDate(
       }
     }
   } catch (e) {
-    throw e;
+    console.error(e);
   }
   return false;
 }
@@ -210,7 +210,7 @@ function observe(
   xhrLink: string,
   bookingLink: string,
   secondShotXhrLink: string | undefined,
-  offset: number = 0
+  offset = 0
 ) {
   function reschedule(time: number) {
     setTimeout(function () {
@@ -284,8 +284,9 @@ function observeImpfstoff() {
             return;
           }
 
-          if (lookupTable.has(stat?.id)) {
-            open(lookupTable.get(stat.id)!);
+          const lookupTableEntry = lookupTable.get(stat.id);
+          if (lookupTableEntry) {
+            open(lookupTableEntry);
           } else {
             return;
           }
