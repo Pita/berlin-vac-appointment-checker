@@ -239,7 +239,7 @@ function observePunctumMedico() {
 
     FormData = require('form-data')
     const formData = new FormData();
-    formData.append('uniqueident', '5a72efb4d3aec');
+    formData.append('uniqueident', '5a72efb4d3aec'); // this ID may need to be updated eventually
 
     axios.post(
       'https://onlinetermine.zollsoft.de/includes/searchTermine_app_feature.php',
@@ -249,6 +249,10 @@ function observePunctumMedico() {
       }
     ).then(function (response) {
       response?.data?.termine.forEach(function (appt) {
+        setTimeout(function () {
+          availabilities = false;
+        }, 60000);
+
         if (!appt.length) {
           return;
         }
@@ -269,11 +273,11 @@ function observePunctumMedico() {
         log("Punctum Medico success", appt);
 
         availabilities = true;
-        setTimeout(function () {
-          availabilities = false;
-        }, 60000);
-
+        open('https://punctum-medico.de/onlinetermine/');
         notify();
+
+        // 2 Minutes break
+        reschedule(1000 * 60 * 2);
       });
     })
     .catch(error);
@@ -409,8 +413,8 @@ data.forEach((links) => {
 // Comment out to disable checking impfstoff.link for availabilities.
 observeImpfstoff();
 
-// Comment back in order to observe Punctum Medico
-// observePunctumMedico();
+// Comment out to disable checking Punctum Medico for availabilities.
+observePunctumMedico();
 
 log("Started checking periodically...");
 log(
