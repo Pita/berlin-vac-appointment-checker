@@ -7,7 +7,8 @@
     "play-sound": "^1.1.3"
   },
   "scripts": {
-    "start": "node demon.mjs"
+    "start": "ts-node demon.ts",
+    "typecheck": "tsc"
   },
   "engines": {
     "node": ">=14"
@@ -16,6 +17,8 @@
     "@types/axios": "^0.14.0",
     "@types/node": "^15.6.1",
     "@types/node-notifier": "^8.0.0",
+    "@types/play-sound": "^1.1.0",
+    "ts-node": "^10.0.0",
     "typescript": "^4.3.2"
   }
 }

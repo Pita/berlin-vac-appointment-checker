@@ -1,5 +1,5 @@
 import open from "open";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { format, add } from "date-fns";
 import notifier from "node-notifier";
 import playerModule from "play-sound";
@@ -38,7 +38,7 @@ const rateLimit = 1000 * 2;
  *
  * @param  {...any} msg
  */
-function log(...msg) {
+function log(...msg: string[]) {
   console.log(new Date().toISOString(), ...msg);
 }
 
@@ -46,7 +46,7 @@ function log(...msg) {
  * fires an error message with the current time
  * @param {*} msg
  */
-function error(msg) {
+function error(msg: any) {
   console.error(
     new Date().toISOString(),
     msg.errno,
@@ -60,7 +60,7 @@ function error(msg) {
  * @param {*} link
  * @returns string
  */
-function updateLinkDate(link) {
+function updateLinkDate(link: string) {
   return link.replace(/\d{4}-\d{2}-\d{2}/, format(new Date(), "yyyy-MM-dd"));
 }
 
@@ -69,7 +69,7 @@ function updateLinkDate(link) {
  * @param {*} link
  * @returns string
  */
-function updateLinkDatePfizer(link) {
+function updateLinkDatePfizer(link: string) {
   return link.replace(
     /\d{4}-\d{2}-\d{2}/,
     format(add(new Date(), { days: 42 }), "yyyy-MM-dd")
@@ -83,7 +83,11 @@ function updateLinkDatePfizer(link) {
  * @param {*} secondShotXhrLink
  * @returns
  */
-async function hasSuitableDate(data, xhrLink, secondShotXhrLink) {
+async function hasSuitableDate(
+  data: DoctoLibResponse,
+  xhrLink: string,
+  secondShotXhrLink: string | undefined
+) {
   try {
     if (data?.total) {
       log("More than 0 availabilities");
@@ -139,7 +143,7 @@ function notify() {
     message: "Appointment!",
   });
 
-  player.play("./bell-ring-01.wav", function (err) {
+  player.play("./bell-ring-01.wav", function (err: any) {
     if (err) {
       error(err);
     }
@@ -156,10 +160,15 @@ function notify() {
  * @param {*} secondShotXhrLink
  * @param {*} offset
  */
-function observe(xhrLink, bookingLink, secondShotXhrLink, offset = 0) {
-  function reschedule(time) {
+function observe(
+  xhrLink: string,
+  bookingLink: string,
+  secondShotXhrLink: string | undefined,
+  offset: number = 0
+) {
+  function reschedule(time: number) {
     setTimeout(function () {
-      observe(xhrLink, bookingLink);
+      observe(xhrLink, bookingLink, secondShotXhrLink);
     }, Math.ceil(time || Math.random() * 1000 * 10) + offset);
   }
 
@@ -197,6 +206,21 @@ function observe(xhrLink, bookingLink, secondShotXhrLink, offset = 0) {
     });
 }
 
+type DoctoLibResponse = {
+  total: number;
+  next_slot?: string;
+  availabilities?: {
+    slots: any[];
+  }[];
+};
+
+type ImpfstoffResponse = {
+  stats: Array<{
+    open: boolean;
+    id: string;
+  }>;
+};
+
 /**
  * checks the vaccination centers for open appointments. if it finds
  * one it will wait 1 minute before checking again
@@ -208,14 +232,14 @@ function observeImpfstoff() {
 
     axios
       .get("https://api.impfstoff.link/?robot=1")
-      .then(function (response) {
+      .then(function (response: AxiosResponse<ImpfstoffResponse>) {
         response?.data?.stats.forEach(function (stat) {
           if (stat.open === false) {
             return;
           }
 
           if (lookupTable.has(stat?.id)) {
-            open(lookupTable.get(stat.id));
+            open(lookupTable.get(stat.id)!);
           } else {
             return;
           }

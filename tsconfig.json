@@ -3,7 +3,9 @@
     "allowJs": true,
     "checkJs": true,
     "noEmit": true,
-    "lib": ["es2015"]
+    "lib": ["es2015"],
+    "strict": true,
+    "esModuleInterop": true
   },
-  "files": ["demon.js"]
+  "files": ["demon.ts"]
 }
