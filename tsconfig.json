@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "checkJs": true,
+    "noEmit": true,
+    "lib": ["es2015"]
+  },
+  "files": ["demon.js"]
+}
