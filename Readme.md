@@ -10,3 +10,7 @@ Currently its configured to check all known sources. In the case that there is a
 npm install
 npm start
 ```
+
+# Contribution
+
+Contributions are welcome :). Also notice the TODO issues.
