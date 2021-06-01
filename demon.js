@@ -212,7 +212,7 @@ function observePunctumMedico() {
             return
           }
 
-          const lowercase = detail?.toLowerCase()
+          const lowercase = detail.toLowerCase()
           return lowercase.includes('erstimpfung')
         })
 
