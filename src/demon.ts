@@ -4,8 +4,38 @@ import { format, add } from "date-fns";
 import notifier from "node-notifier";
 import playerModule from "play-sound";
 import FormData from "form-data";
+import * as path from "path";
 
 const player = playerModule({});
+
+const rateLimit = 1000 * 3;
+
+const lookupTable = new Map([
+  [
+    "arena",
+    "https://www.doctolib.de/institut/berlin/ciz-berlin-berlin?pid=practice-158431",
+  ],
+  [
+    "tempelhof",
+    "https://www.doctolib.de/institut/berlin/ciz-berlin-berlin?pid=practice-158433",
+  ],
+  [
+    "messe",
+    "https://www.doctolib.de/institut/berlin/ciz-berlin-berlin?pid=practice-158434",
+  ],
+  [
+    "velodrom",
+    "https://www.doctolib.de/institut/berlin/ciz-berlin-berlin?pid=practice-158435",
+  ],
+  [
+    "tegel",
+    "https://www.doctolib.de/institut/berlin/ciz-berlin-berlin?pid=practice-158436",
+  ],
+  [
+    "erika",
+    "https://www.doctolib.de/institut/berlin/ciz-berlin-berlin?pid=practice-158437",
+  ],
+]);
 
 type ZollSoftResponse = {
   termine: string[][];
@@ -63,38 +93,9 @@ function observePunctumMedico() {
   }
 }
 
-const lookupTable = new Map([
-  [
-    "arena",
-    "https://www.doctolib.de/institut/berlin/ciz-berlin-berlin?pid=practice-158431",
-  ],
-  [
-    "tempelhof",
-    "https://www.doctolib.de/institut/berlin/ciz-berlin-berlin?pid=practice-158433",
-  ],
-  [
-    "messe",
-    "https://www.doctolib.de/institut/berlin/ciz-berlin-berlin?pid=practice-158434",
-  ],
-  [
-    "velodrom",
-    "https://www.doctolib.de/institut/berlin/ciz-berlin-berlin?pid=practice-158435",
-  ],
-  [
-    "tegel",
-    "https://www.doctolib.de/institut/berlin/ciz-berlin-berlin?pid=practice-158436",
-  ],
-  [
-    "erika",
-    "https://www.doctolib.de/institut/berlin/ciz-berlin-berlin?pid=practice-158437",
-  ],
-]);
-const rateLimit = 1000 * 2;
-
 /**
  * fires an log message with the current time
  *
- * @param  {...any} msg
  */
 function log(...msg: string[]) {
   console.log(new Date().toISOString(), ...msg);
@@ -102,7 +103,6 @@ function log(...msg: string[]) {
 
 /**
  * fires an error message with the current time
- * @param {*} msg
  */
 function error(msg: any) {
   console.error(
@@ -115,8 +115,6 @@ function error(msg: any) {
 
 /**
  * changed the date to a more readable format
- * @param {*} link
- * @returns string
  */
 function updateLinkDate(link: string) {
   return link.replace(/\d{4}-\d{2}-\d{2}/, format(new Date(), "yyyy-MM-dd"));
@@ -124,8 +122,6 @@ function updateLinkDate(link: string) {
 
 /**
  * changed the date to a more readable format
- * @param {*} link
- * @returns string
  */
 function updateLinkDatePfizer(link: string) {
   return link.replace(
@@ -136,10 +132,6 @@ function updateLinkDatePfizer(link: string) {
 
 /**
  * checks to see if there are dates, or if there is a second date when required
- * @param {*} data
- * @param {*} xhrLink
- * @param {*} secondShotXhrLink
- * @returns
  */
 async function hasSuitableDate(
   data: DoctoLibResponse,
@@ -201,7 +193,7 @@ function notify() {
     message: "Appointment!",
   });
 
-  player.play("./bell-ring-01.wav", function (err: any) {
+  player.play(path.join(__dirname, "./bell-ring-01.wav"), function (err: any) {
     if (err) {
       error(err);
     }
@@ -213,10 +205,6 @@ function notify() {
  * it notifies, opens a browser window, then waits 2 minutes
  * before checking again
  *
- * @param {*} xhrLink
- * @param {*} bookingLink
- * @param {*} secondShotXhrLink
- * @param {*} offset
  */
 function observe(
   xhrLink: string,
