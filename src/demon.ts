@@ -1,12 +1,12 @@
 import chalk from "chalk";
 
-import { individualLinks } from"./data";
+import { individualLinks } from "./data";
 
 import {
   observeIndividualLink,
   observeImpfstoff,
-  observePunctumMedico
-} from"./sources";
+  observePunctumMedico,
+} from "./sources";
 
 import { log } from "./demon.helpers";
 
@@ -14,7 +14,12 @@ import { log } from "./demon.helpers";
 let offset = 0;
 individualLinks.forEach((links) => {
   offset = offset + 100;
-  observeIndividualLink(links.xhrLink, links.bookingLink, links.secondShotXhrLink, offset);
+  observeIndividualLink(
+    links.xhrLink,
+    links.bookingLink,
+    links.secondShotXhrLink,
+    offset
+  );
 });
 
 // Comment out to disable checking impfstoff.link for availabilities.

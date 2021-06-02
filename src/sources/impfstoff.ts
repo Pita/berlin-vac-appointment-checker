@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from "axios";
-import { impfstoffLookupTable } from"../data";
+import { impfstoffLookupTable } from "../data";
 
 import {
   error,
@@ -7,7 +7,7 @@ import {
   notify,
   ONE_MINUTE,
   open,
-  RATE_LIMIT
+  RATE_LIMIT,
 } from "../demon.helpers";
 
 import type { ImpfstoffResponse } from "../demon.types";

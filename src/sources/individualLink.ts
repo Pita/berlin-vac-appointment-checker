@@ -8,7 +8,7 @@ import {
   ONE_MINUTE,
   open,
   RATE_LIMIT,
-  updateLinkDate
+  updateLinkDate,
 } from "../demon.helpers";
 
 /**
@@ -17,7 +17,7 @@ import {
  * before checking again
  *
  */
- function observeIndividualLink(
+function observeIndividualLink(
   xhrLink: string,
   bookingLink: string,
   secondShotXhrLink: string | undefined,

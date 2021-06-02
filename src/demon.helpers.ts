@@ -5,16 +5,14 @@ import playerModule from "play-sound";
 import * as path from "path";
 import chalk from "chalk";
 
-import type {
-  DoctoLibResponse
-} from "./demon.types";
+import type { DoctoLibResponse } from "./demon.types";
 
 const player = playerModule({});
 
 /**
  * we re-export this to put it on the same level as log, error, notify, etc
  */
-export {default as open} from "open";
+export { default as open } from "open";
 
 export const RATE_LIMIT = 1000 * 3;
 export const ONE_MINUTE = 60000;
@@ -31,11 +29,7 @@ export function log(...msg: string[]): void {
  */
 export function error(msg: AxiosError): void {
   console.error(
-    chalk.red(
-      new Date().toISOString(),
-      msg.code,
-      msg?.config?.url
-    )
+    chalk.red(new Date().toISOString(), msg.code, msg?.config?.url)
   );
 }
 
@@ -59,7 +53,7 @@ export function updateLinkDatePfizer(link: string): string {
 /**
  * checks to see if there are dates, or if there is a second date when required
  */
-export async function hasSuitableDate (
+export async function hasSuitableDate(
   data: DoctoLibResponse,
   xhrLink: string,
   secondShotXhrLink: string | undefined
@@ -119,9 +113,12 @@ export function notify(): void {
     message: "Appointment!",
   });
 
-  player.play(path.join(__dirname, "./bell-ring-01.wav"), function (err: Error) {
-    if (err) {
-      log(chalk.red(err));
+  player.play(
+    path.join(__dirname, "./bell-ring-01.wav"),
+    function (err: Error) {
+      if (err) {
+        log(chalk.red(err));
+      }
     }
-  });
+  );
 }

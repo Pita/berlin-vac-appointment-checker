@@ -7,7 +7,7 @@ import {
   notify,
   ONE_MINUTE,
   open,
-  RATE_LIMIT
+  RATE_LIMIT,
 } from "../demon.helpers";
 
 import type { ZollSoftResponse } from "../demon.types";

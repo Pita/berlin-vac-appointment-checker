@@ -88,7 +88,6 @@ export interface IndividualLink {
  */
 export type IndividualLinks = IndividualLink[];
 
-
 /**
  * a response from onlinetermine.zollsoft.de. contains updates appointment data
  */
