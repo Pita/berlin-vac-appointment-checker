@@ -21,7 +21,7 @@ export const ONE_MINUTE = 60000;
  * fires an log message with the current time
  */
 export function log(...msg: string[]): void {
-  console.log(new Date().toISOString(), ...msg);
+  console.log(chalk.yellow(new Date().toISOString()), ...msg);
 }
 
 /**
@@ -29,7 +29,7 @@ export function log(...msg: string[]): void {
  */
 export function error(msg: AxiosError): void {
   console.error(
-    chalk.red(new Date().toISOString(), msg.code, msg?.config?.url)
+    chalk.yellow(new Date().toISOString()), chalk.red( msg.code, msg?.config?.url)
   );
 }
 

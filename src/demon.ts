@@ -12,14 +12,9 @@ import { log } from "./demon.helpers";
 
 // Comment out to disable checking individual links
 let offset = 0;
-individualLinks.forEach((links) => {
+individualLinks.forEach(link => {
   offset = offset + 100;
-  observeIndividualLink(
-    links.xhrLink,
-    links.bookingLink,
-    links.secondShotXhrLink,
-    offset
-  );
+  observeIndividualLink(link, offset);
 });
 
 // Comment out to disable checking impfstoff.link for availabilities.

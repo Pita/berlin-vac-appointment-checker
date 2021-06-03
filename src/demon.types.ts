@@ -49,6 +49,29 @@ export type ImpstoffAvailability = {
   open: boolean;
 };
 
+export type ImpstoffEntry = {
+  /**
+   * the link that will be opened in the browser when an appointment is found
+   */
+  bookingLink: string;
+
+  /**
+   * type of vaccine offered. this is used to allow filtering via the config
+   */
+  vaccine: "astrazeneca" | "biontech" | "johnsonAndJohnson" | "moderna";
+
+  /**
+   * type of vaccine offered. this is used to allow filtering via the config.
+   *
+   * some places offer morethan one type and due to the api we cannot filter exactly
+   */
+  vaccine2?: "astrazeneca" | "biontech" | "johnsonAndJohnson" | "moderna";
+};
+
+export type ImpfstoffEntries = {
+  [key: string]: ImpstoffEntry
+};
+
 /**
  * a response from impfstoff.link. contains updates appointment data
  */
@@ -69,18 +92,29 @@ export interface IndividualLink {
   bookingLink: string;
 
   /**
-   * the link to doctolib's api where booking availabilty gets checked.
-   * You can find this link in the debugger console of your browser.
-   * The date will get automatically corrected to the current date
-   */
-  xhrLink: string;
-
-  /**
    * Some places want you to book a second shoot immediatly, if they don't
    * have a slot for a second appointment, you can't book at all. So in
    * this cases it makes sense to check this second appointment as well
    */
   secondShotXhrLink?: string;
+
+  /**
+   * filters by first or second shot.  "first" also includes single shot
+   * as well as places tat require booking both at once
+   */
+  shot: "first" | "second";
+
+  /**
+   * type of vaccine offered. this is used to allow filtering via the config
+   */
+  vaccine: "astrazeneca" | "biontech" | "johnsonAndJohnson" | "moderna";
+
+  /**
+   * the link to doctolib's api where booking availabilty gets checked.
+   * You can find this link in the debugger console of your browser.
+   * The date will get automatically corrected to the current date
+   */
+  xhrLink: string;
 }
 
 /**
