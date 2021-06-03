@@ -20,23 +20,14 @@ import config from "../config";
  * before checking again
  *
  */
-function observeIndividualLink(
-  link: IndividualLink,
-  offset = 0
-): void {
-  const {
-    bookingLink,
-    secondShotXhrLink,
-    shot,
-    vaccine,
-    xhrLink
-  } = link;
+function observeIndividualLink(link: IndividualLink, offset = 0): void {
+  const { bookingLink, secondShotXhrLink, shot, vaccine, xhrLink } = link;
 
   /**
    * after running, we need to set it to run again
    * @param time
    */
-    function reschedule(time: number) {
+  function reschedule(time: number) {
     setTimeout(function () {
       observeIndividualLink(link, offset);
     }, Math.ceil(time || Math.random() * 1000 * 10) + offset);

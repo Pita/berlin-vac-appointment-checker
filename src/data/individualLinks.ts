@@ -9,108 +9,141 @@ import { IndividualLinks } from "../demon.types";
  */
 const individualLinks: IndividualLinks = [
   {
-    bookingLink: "https://www.doctolib.de/allgemeinmedizin/berlin/sophie-ruggeberg",
+    bookingLink:
+      "https://www.doctolib.de/allgemeinmedizin/berlin/sophie-ruggeberg",
     shot: "first",
     vaccine: "astrazeneca",
-    xhrLink: "https://www.doctolib.de/availabilities.json?start_date=2021-06-01&visit_motive_ids=2764198&agenda_ids=190434&insurance_sector=public&practice_ids=114976&destroy_temporary=true&limit=4"
+    xhrLink:
+      "https://www.doctolib.de/availabilities.json?start_date=2021-06-01&visit_motive_ids=2764198&agenda_ids=190434&insurance_sector=public&practice_ids=114976&destroy_temporary=true&limit=4",
   },
   {
-    bookingLink: "https://www.doctolib.de/allgemeinmedizin/berlin/sophie-ruggeberg",
+    bookingLink:
+      "https://www.doctolib.de/allgemeinmedizin/berlin/sophie-ruggeberg",
     shot: "second",
     vaccine: "astrazeneca",
-    xhrLink: "https://www.doctolib.de/availabilities.json?start_date=2021-06-01&visit_motive_ids=2764199&agenda_ids=190434&insurance_sector=public&practice_ids=114976&limit=4"
+    xhrLink:
+      "https://www.doctolib.de/availabilities.json?start_date=2021-06-01&visit_motive_ids=2764199&agenda_ids=190434&insurance_sector=public&practice_ids=114976&limit=4",
   },
   {
-    bookingLink: "https://www.doctolib.de/allgemeinmedizin/berlin/sophie-ruggeberg",
+    bookingLink:
+      "https://www.doctolib.de/allgemeinmedizin/berlin/sophie-ruggeberg",
     shot: "first",
     vaccine: "johnsonAndJohnson",
-    xhrLink: "https://www.doctolib.de/availabilities.json?start_date=2021-06-01&visit_motive_ids=2886231&agenda_ids=190434&insurance_sector=public&practice_ids=114976&limit=4",
+    xhrLink:
+      "https://www.doctolib.de/availabilities.json?start_date=2021-06-01&visit_motive_ids=2886231&agenda_ids=190434&insurance_sector=public&practice_ids=114976&limit=4",
   },
   {
-    bookingLink: "https://www.doctolib.de/facharzt-fur-hno/berlin/babak-mayelzadeh",
+    bookingLink:
+      "https://www.doctolib.de/facharzt-fur-hno/berlin/babak-mayelzadeh",
     shot: "first",
     vaccine: "astrazeneca",
-    xhrLink: "https://www.doctolib.de/availabilities.json?start_date=2021-06-01&visit_motive_ids=2862419&agenda_ids=305777&insurance_sector=public&practice_ids=120549&destroy_temporary=true&limit=4",
+    xhrLink:
+      "https://www.doctolib.de/availabilities.json?start_date=2021-06-01&visit_motive_ids=2862419&agenda_ids=305777&insurance_sector=public&practice_ids=120549&destroy_temporary=true&limit=4",
   },
   {
-    bookingLink: "https://www.doctolib.de/facharzt-fur-hno/berlin/babak-mayelzadeh",
+    bookingLink:
+      "https://www.doctolib.de/facharzt-fur-hno/berlin/babak-mayelzadeh",
     shot: "second",
     vaccine: "astrazeneca",
-    xhrLink: "https://www.doctolib.de/availabilities.json?start_date=2021-06-01&visit_motive_ids=2862420&agenda_ids=305777&insurance_sector=public&practice_ids=120549&limit=4",
+    xhrLink:
+      "https://www.doctolib.de/availabilities.json?start_date=2021-06-01&visit_motive_ids=2862420&agenda_ids=305777&insurance_sector=public&practice_ids=120549&limit=4",
   },
   {
-    bookingLink: "https://www.doctolib.de/facharzt-fur-hno/berlin/babak-mayelzadeh",
+    bookingLink:
+      "https://www.doctolib.de/facharzt-fur-hno/berlin/babak-mayelzadeh",
     shot: "first",
     vaccine: "johnsonAndJohnson",
-    xhrLink: "https://www.doctolib.de/availabilities.json?start_date=2021-06-01&visit_motive_ids=2879179&agenda_ids=305777&insurance_sector=public&practice_ids=120549&limit=4",
+    xhrLink:
+      "https://www.doctolib.de/availabilities.json?start_date=2021-06-01&visit_motive_ids=2879179&agenda_ids=305777&insurance_sector=public&practice_ids=120549&limit=4",
   },
   {
-    xhrLink: "https://www.doctolib.de/availabilities.json?start_date=2021-05-30&visit_motive_ids=2733996&agenda_ids=56915&insurance_sector=public&practice_ids=22563&destroy_temporary=true&limit=4",
+    xhrLink:
+      "https://www.doctolib.de/availabilities.json?start_date=2021-05-30&visit_motive_ids=2733996&agenda_ids=56915&insurance_sector=public&practice_ids=22563&destroy_temporary=true&limit=4",
     // secondShotXhrLink: "" // this must have a second shot Xhr but i cant see it unless i get to the page
     shot: "first",
     vaccine: "biontech",
     bookingLink: "https://www.doctolib.de/facharzt-fur-hno/berlin/rafael-hardy",
   },
   {
-    bookingLink: "https://www.doctolib.de/innere-und-allgemeinmediziner/berlin/oliver-staeck",
+    bookingLink:
+      "https://www.doctolib.de/innere-und-allgemeinmediziner/berlin/oliver-staeck",
     // secondShotXhrLink: "" // this must have a second shot Xhr but i cant see it unless i get to the page
     shot: "first",
     vaccine: "astrazeneca",
-    xhrLink: "https://www.doctolib.de/availabilities.json?start_date=2021-06-01&visit_motive_ids=2784656&agenda_ids=268801&insurance_sector=public&practice_ids=178663&limit=4",
+    xhrLink:
+      "https://www.doctolib.de/availabilities.json?start_date=2021-06-01&visit_motive_ids=2784656&agenda_ids=268801&insurance_sector=public&practice_ids=178663&limit=4",
   },
   {
-    bookingLink: "https://www.doctolib.de/innere-und-allgemeinmediziner/berlin/oliver-staeck",
+    bookingLink:
+      "https://www.doctolib.de/innere-und-allgemeinmediziner/berlin/oliver-staeck",
     shot: "first",
     vaccine: "johnsonAndJohnson",
-    xhrLink: "https://www.doctolib.de/availabilities.json?start_date=2021-06-01&visit_motive_ids=2885945&agenda_ids=268801&insurance_sector=public&practice_ids=178663&limit=4",
+    xhrLink:
+      "https://www.doctolib.de/availabilities.json?start_date=2021-06-01&visit_motive_ids=2885945&agenda_ids=268801&insurance_sector=public&practice_ids=178663&limit=4",
   },
   {
-    bookingLink: "https://www.doctolib.de/praxis/berlin/praxis-fuer-orthopaedie-und-unfallchirurgie-neukoelln",
+    bookingLink:
+      "https://www.doctolib.de/praxis/berlin/praxis-fuer-orthopaedie-und-unfallchirurgie-neukoelln",
     shot: "first",
     vaccine: "astrazeneca",
-    xhrLink: "https://www.doctolib.de/availabilities.json?start_date=2021-06-01&visit_motive_ids=2811460&agenda_ids=464751&insurance_sector=public&practice_ids=28436&destroy_temporary=true&limit=4",
+    xhrLink:
+      "https://www.doctolib.de/availabilities.json?start_date=2021-06-01&visit_motive_ids=2811460&agenda_ids=464751&insurance_sector=public&practice_ids=28436&destroy_temporary=true&limit=4",
   },
   {
-    bookingLink: "https://www.doctolib.de/praxis/berlin/praxis-fuer-orthopaedie-und-unfallchirurgie-neukoelln",
+    bookingLink:
+      "https://www.doctolib.de/praxis/berlin/praxis-fuer-orthopaedie-und-unfallchirurgie-neukoelln",
     shot: "second",
-    xhrLink: "https://www.doctolib.de/availabilities.json?start_date=2021-06-01&visit_motive_ids=2811461&agenda_ids=464751&insurance_sector=public&practice_ids=28436&limit=4",
-    vaccine: "astrazeneca"
+    xhrLink:
+      "https://www.doctolib.de/availabilities.json?start_date=2021-06-01&visit_motive_ids=2811461&agenda_ids=464751&insurance_sector=public&practice_ids=28436&limit=4",
+    vaccine: "astrazeneca",
   },
   {
-    bookingLink: "https://www.doctolib.de/praxis/berlin/praxis-fuer-orthopaedie-und-unfallchirurgie-neukoelln",
+    bookingLink:
+      "https://www.doctolib.de/praxis/berlin/praxis-fuer-orthopaedie-und-unfallchirurgie-neukoelln",
     shot: "first",
     vaccine: "johnsonAndJohnson",
-    xhrLink: "https://www.doctolib.de/availabilities.json?start_date=2021-06-01&visit_motive_ids=2811530&agenda_ids=464773&insurance_sector=public&practice_ids=28436&limit=4",
+    xhrLink:
+      "https://www.doctolib.de/availabilities.json?start_date=2021-06-01&visit_motive_ids=2811530&agenda_ids=464773&insurance_sector=public&practice_ids=28436&limit=4",
   },
   {
-    bookingLink: "https://www.doctolib.de/medizinisches-versorgungszentrum-mvz/berlin/ambulantes-gynaekologisches-operationszentrum",
+    bookingLink:
+      "https://www.doctolib.de/medizinisches-versorgungszentrum-mvz/berlin/ambulantes-gynaekologisches-operationszentrum",
     shot: "first",
     vaccine: "biontech",
-    xhrLink: "https://www.doctolib.de/availabilities.json?start_date=2021-06-01&visit_motive_ids=2757216&agenda_ids=439400&insurance_sector=public&practice_ids=107774&destroy_temporary=true&limit=4",
+    xhrLink:
+      "https://www.doctolib.de/availabilities.json?start_date=2021-06-01&visit_motive_ids=2757216&agenda_ids=439400&insurance_sector=public&practice_ids=107774&destroy_temporary=true&limit=4",
   },
   {
-    bookingLink: "https://www.doctolib.de/medizinisches-versorgungszentrum-mvz/berlin/ambulantes-gynaekologisches-operationszentrum",
+    bookingLink:
+      "https://www.doctolib.de/medizinisches-versorgungszentrum-mvz/berlin/ambulantes-gynaekologisches-operationszentrum",
     shot: "second",
     vaccine: "biontech",
-    xhrLink: "https://www.doctolib.de/availabilities.json?start_date=2021-06-01&visit_motive_ids=2757217&agenda_ids=439400&insurance_sector=public&practice_ids=107774&limit=4",
+    xhrLink:
+      "https://www.doctolib.de/availabilities.json?start_date=2021-06-01&visit_motive_ids=2757217&agenda_ids=439400&insurance_sector=public&practice_ids=107774&limit=4",
   },
   {
-    bookingLink: "https://www.doctolib.de/medizinisches-versorgungszentrum-mvz/berlin/ambulantes-gynaekologisches-operationszentrum",
+    bookingLink:
+      "https://www.doctolib.de/medizinisches-versorgungszentrum-mvz/berlin/ambulantes-gynaekologisches-operationszentrum",
     shot: "first",
     vaccine: "astrazeneca",
-    xhrLink: "https://www.doctolib.de/availabilities.json?start_date=2021-06-01&visit_motive_ids=2885841&agenda_ids=480139&insurance_sector=public&practice_ids=107774&destroy_temporary=true&limit=4",
+    xhrLink:
+      "https://www.doctolib.de/availabilities.json?start_date=2021-06-01&visit_motive_ids=2885841&agenda_ids=480139&insurance_sector=public&practice_ids=107774&destroy_temporary=true&limit=4",
   },
   {
-    bookingLink: "https://www.doctolib.de/medizinisches-versorgungszentrum-mvz/berlin/ambulantes-gynaekologisches-operationszentrum",
+    bookingLink:
+      "https://www.doctolib.de/medizinisches-versorgungszentrum-mvz/berlin/ambulantes-gynaekologisches-operationszentrum",
     shot: "second",
     vaccine: "astrazeneca",
-    xhrLink: "https://www.doctolib.de/availabilities.json?start_date=2021-06-01&visit_motive_ids=2885842&agenda_ids=480139&insurance_sector=public&practice_ids=107774&limit=4",
+    xhrLink:
+      "https://www.doctolib.de/availabilities.json?start_date=2021-06-01&visit_motive_ids=2885842&agenda_ids=480139&insurance_sector=public&practice_ids=107774&limit=4",
   },
   {
-    bookingLink: "https://www.doctolib.de/medizinisches-versorgungszentrum-mvz/berlin/ambulantes-gynaekologisches-operationszentrum",
+    bookingLink:
+      "https://www.doctolib.de/medizinisches-versorgungszentrum-mvz/berlin/ambulantes-gynaekologisches-operationszentrum",
     shot: "first",
     vaccine: "johnsonAndJohnson",
-    xhrLink: "https://www.doctolib.de/availabilities.json?start_date=2021-06-01&visit_motive_ids=2880391&agenda_ids=480095&insurance_sector=public&practice_ids=107774&limit=4",
+    xhrLink:
+      "https://www.doctolib.de/availabilities.json?start_date=2021-06-01&visit_motive_ids=2880391&agenda_ids=480095&insurance_sector=public&practice_ids=107774&limit=4",
   },
   {
     bookingLink: `https://www.doctolib.de/institut/berlin/ciz-berlin-berlin?pid=practice-158434`,
@@ -157,7 +190,8 @@ const individualLinks: IndividualLinks = [
       "https://www.doctolib.de/krankenhaus/berlin/gkh-havelhoehe-impfzentrum",
     shot: "first",
     vaccine: "johnsonAndJohnson",
-    xhrLink: "https://www.doctolib.de/availabilities.json?start_date=2021-06-01&visit_motive_ids=2898162&agenda_ids=469719&insurance_sector=public&practice_ids=162056&limit=4",
+    xhrLink:
+      "https://www.doctolib.de/availabilities.json?start_date=2021-06-01&visit_motive_ids=2898162&agenda_ids=469719&insurance_sector=public&practice_ids=162056&limit=4",
   },
 ];
 

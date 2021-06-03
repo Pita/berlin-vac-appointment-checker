@@ -17,9 +17,11 @@ import type { ZollSoftResponse } from "../demon.types";
 let availabilities = false;
 function observePunctumMedico(): void {
   setTimeout(observePunctumMedico, RATE_LIMIT);
-  const {shot, vaccines } = config;
+  const { shot, vaccines } = config;
 
-  const shouldCheck = !shot.second && (vaccines.astrazeneca || vaccines.biontech || vaccines.johnsonAndJohnson);
+  const shouldCheck =
+    !shot.second &&
+    (vaccines.astrazeneca || vaccines.biontech || vaccines.johnsonAndJohnson);
 
   if (!availabilities && shouldCheck) {
     log("checking Punctum Medico");

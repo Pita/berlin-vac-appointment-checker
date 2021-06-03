@@ -20,10 +20,7 @@ import type { ImpfstoffResponse } from "../demon.types";
  */
 let recentlyOpened = false;
 function observeImpfstoff(): void {
-  const {
-    shot,
-    vaccines
-  } = config;
+  const { shot, vaccines } = config;
 
   /**
    * we check for second shot since all vaccination centers only do both shots
@@ -41,16 +38,12 @@ function observeImpfstoff(): void {
 
           const entry = impfstoffEntries[stat.id];
           if (entry) {
-            const {
-              bookingLink,
-              vaccine,
-              vaccine2
-            } = entry;
+            const { bookingLink, vaccine, vaccine2 } = entry;
 
             /**
-            * check if the link has an enabled vaccine, and it fits against the shot filter
+             * check if the link has an enabled vaccine, and it fits against the shot filter
              */
-            if (vaccines[vaccine] || vaccine2 && vaccines[vaccine2]) {
+            if (vaccines[vaccine] || (vaccine2 && vaccines[vaccine2])) {
               open(bookingLink);
 
               notify();

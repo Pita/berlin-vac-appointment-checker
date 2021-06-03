@@ -29,7 +29,8 @@ export function log(...msg: string[]): void {
  */
 export function error(msg: AxiosError): void {
   console.error(
-    chalk.yellow(new Date().toISOString()), chalk.red( msg.code, msg?.config?.url)
+    chalk.yellow(new Date().toISOString()),
+    chalk.red(msg.code, msg?.config?.url)
   );
 }
 

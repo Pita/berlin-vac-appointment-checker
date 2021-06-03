@@ -69,7 +69,7 @@ export type ImpstoffEntry = {
 };
 
 export type ImpfstoffEntries = {
-  [key: string]: ImpstoffEntry
+  [key: string]: ImpstoffEntry;
 };
 
 /**

@@ -24,7 +24,7 @@ const config = {
      * please note that this will NOT show places that require
      * both appointments to be made at once
      */
-    second: false
+    second: false,
   },
 
   /**
@@ -54,8 +54,8 @@ const config = {
     astrazeneca: true,
     biontech: true,
     johnsonAndJohnson: true,
-    moderna: true
-  }
+    moderna: true,
+  },
 };
 
 export default config;
