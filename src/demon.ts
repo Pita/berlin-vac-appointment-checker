@@ -8,20 +8,27 @@ import {
   observePunctumMedico,
 } from "./sources";
 
+import config from "./config";
+
 import { log } from "./demon.helpers";
 
-// Comment out to disable checking individual links
-let offset = 0;
-individualLinks.forEach((link) => {
-  offset = offset + 100;
-  observeIndividualLink(link, offset);
-});
+const { sources } = config;
 
-// Comment out to disable checking impfstoff.link for availabilities.
-observeImpfstoff();
+if (sources.doctolibLinks) {
+  let offset = 0;
+  individualLinks.forEach((link) => {
+    offset = offset + 100;
+    observeIndividualLink(link, offset);
+  });
+}
 
-// Comment out to disable punctum medico for availabilities.
-observePunctumMedico();
+if (sources.vaccinationCenters) {
+  observeImpfstoff();
+}
+
+if (sources.punctumMedicum) {
+  observePunctumMedico();
+}
 
 log(chalk.green("Started checking periodically..."));
 log(
