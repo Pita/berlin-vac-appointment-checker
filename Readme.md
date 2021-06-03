@@ -8,9 +8,9 @@ Currently its configured to check all known sources and vaccines. If you want to
 
 [Install node if you have not already](https://nodejs.org/en/download/)
 
-If you do not have git, [download this zip](https://github.com/Pita/berlin-vac-appointment-checker/archive/refs/heads/main.zip) (it's a zip of this repo)
+clone the repo or, if you do not have git, [download this zip](https://github.com/Pita/berlin-vac-appointment-checker/archive/refs/heads/main.zip) and extract it. (it's a zip of this repo)
 
-extract the zip file and go to that folder in the command line. If you are windows and having issues, [this can help](https://stackoverflow.com/questions/31217771/change-directory-in-node-js-command-prompt).
+Go to the repo folder in the command line. If you are windows and having issues, [this can help](https://stackoverflow.com/questions/31217771/change-directory-in-node-js-command-prompt).
 
 
 ```
