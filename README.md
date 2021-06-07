@@ -1,4 +1,7 @@
 # Doctolib Berlin Vaccination Appointment Checker
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 Small node.js script that checks various sources if vaccination appointments are available. If so, immediately opens a browser window for you so you can book quickly.
 
@@ -23,3 +26,23 @@ This script was last tested by a dev June 3, 2021. If Doctolib changes their API
 # Contribution
 
 Contributions are welcome :). Also notice the TODO issues.
+
+## Contributors ✨
+
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tr>
+    <td align="center"><a href="http://knoblau.ch"><img src="https://avatars.githubusercontent.com/u/1480168?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Sadie Braun</b></sub></a><br /><a href="https://github.com/Pita/berlin-vac-appointment-checker/commits?author=mousemke" title="Code">💻</a></td>
+  </tr>
+</table>
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
