@@ -22,6 +22,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "Arcticon",
+      "name": "Maximilian Kramp",
+      "avatar_url": "https://avatars.githubusercontent.com/u/13851316?v=4",
+      "profile": "http://www.arcticon.de",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,

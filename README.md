@@ -1,6 +1,6 @@
 # Doctolib Berlin Vaccination Appointment Checker
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-3-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 Small node.js script that checks various sources if vaccination appointments are available. If so, immediately opens a browser window for you so you can book quickly.
@@ -38,6 +38,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   <tr>
     <td align="center"><a href="http://knoblau.ch"><img src="https://avatars.githubusercontent.com/u/1480168?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Sadie Braun</b></sub></a><br /><a href="https://github.com/Pita/berlin-vac-appointment-checker/commits?author=mousemke" title="Code">💻</a></td>
     <td align="center"><a href="https://jozr.io/"><img src="https://avatars.githubusercontent.com/u/8154741?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Josephine Wright</b></sub></a><br /><a href="https://github.com/Pita/berlin-vac-appointment-checker/commits?author=jozr" title="Code">💻</a></td>
+    <td align="center"><a href="http://www.arcticon.de"><img src="https://avatars.githubusercontent.com/u/13851316?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Maximilian Kramp</b></sub></a><br /><a href="https://github.com/Pita/berlin-vac-appointment-checker/commits?author=Arcticon" title="Code">💻</a></td>
   </tr>
 </table>
 
