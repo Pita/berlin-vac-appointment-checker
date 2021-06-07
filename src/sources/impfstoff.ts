@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from "axios";
-import { impfstoffLookupTable } from "../data";
+import { impfstoffEntries } from "../data";
 
 import {
   error,
@@ -10,6 +10,8 @@ import {
   RATE_LIMIT,
 } from "../demon.helpers";
 
+import config from "../config";
+
 import type { ImpfstoffResponse } from "../demon.types";
 
 /**
@@ -18,7 +20,12 @@ import type { ImpfstoffResponse } from "../demon.types";
  */
 let recentlyOpened = false;
 function observeImpfstoff(): void {
-  if (!recentlyOpened) {
+  const { shot, vaccines } = config;
+
+  /**
+   * we check for second shot since all vaccination centers only do both shots
+   */
+  if (!recentlyOpened && !shot.second) {
     log("checking impfstoff.link");
 
     axios
@@ -29,21 +36,28 @@ function observeImpfstoff(): void {
             return;
           }
 
-          const lookupTableEntry = impfstoffLookupTable.get(stat.id);
-          if (lookupTableEntry) {
-            open(lookupTableEntry);
+          const entry = impfstoffEntries[stat.id];
+          if (entry) {
+            const { bookingLink, vaccine, vaccine2 } = entry;
+
+            /**
+             * check if the link has an enabled vaccine, and it fits against the shot filter
+             */
+            if (vaccines[vaccine] || (vaccine2 && vaccines[vaccine2])) {
+              open(bookingLink);
+
+              notify();
+
+              log("impfstuff success", stat.id);
+            }
           } else {
             return;
           }
-
-          log("impfstuff success", stat.id);
 
           recentlyOpened = true;
           setTimeout(function () {
             recentlyOpened = false;
           }, ONE_MINUTE);
-
-          notify();
         });
       })
       .catch(error);

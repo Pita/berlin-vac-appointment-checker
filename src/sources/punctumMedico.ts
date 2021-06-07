@@ -10,13 +10,20 @@ import {
   RATE_LIMIT,
 } from "../demon.helpers";
 
+import config from "../config";
+
 import type { ZollSoftResponse } from "../demon.types";
 
 let availabilities = false;
 function observePunctumMedico(): void {
   setTimeout(observePunctumMedico, RATE_LIMIT);
+  const { shot, vaccines } = config;
 
-  if (!availabilities) {
+  const shouldCheck =
+    !shot.second &&
+    (vaccines.astrazeneca || vaccines.biontech || vaccines.johnsonAndJohnson);
+
+  if (!availabilities && shouldCheck) {
     log("checking Punctum Medico");
 
     const formData = new FormData();
@@ -56,8 +63,9 @@ function observePunctumMedico(): void {
             availabilities = false;
           }, ONE_MINUTE);
 
-          notify();
           open("https://punctum-medico.de/onlinetermine/");
+
+          notify();
         });
       })
       .catch(error);
