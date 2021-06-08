@@ -22,15 +22,10 @@ let availabilities = false;
 function observePunctumMedico(): void {
   setTimeout(observePunctumMedico, RATE_LIMIT);
   const { shot, vaccines } = config;
-  const {
-    astrazeneca,
-    biontech,
-    johnsonAndJohnson
-  } = vaccines;
+  const { astrazeneca, biontech, johnsonAndJohnson } = vaccines;
 
   const shouldCheck =
-    !shot.second &&
-    (astrazeneca || biontech || johnsonAndJohnson);
+    !shot.second && (astrazeneca || biontech || johnsonAndJohnson);
 
   if (!availabilities && shouldCheck) {
     log(chalk.cyan("checking"), "- Punctum Medico");
@@ -39,13 +34,9 @@ function observePunctumMedico(): void {
     formData.append("uniqueident", "5a72efb4d3aec"); // this ID may need to be updated eventually
 
     axios
-      .post(
-        punctumMedicoApiLink,
-        formData,
-        {
-          headers: formData.getHeaders(),
-        }
-      )
+      .post(punctumMedicoApiLink, formData, {
+        headers: formData.getHeaders(),
+      })
       .then(function (response: AxiosResponse<ZollSoftResponse>) {
         response?.data?.termine.forEach(function (appt) {
           // if they change their api this will stop working
@@ -68,9 +59,9 @@ function observePunctumMedico(): void {
             const lowercase = detail.toLowerCase();
 
             const correctVaccine =
-              astrazeneca && lowercase.includes("astrazeneca") ||
-              biontech && lowercase.includes("biontech") ||
-              johnsonAndJohnson && lowercase.includes("johnson & johnson");
+              (astrazeneca && lowercase.includes("astrazeneca")) ||
+              (biontech && lowercase.includes("biontech")) ||
+              (johnsonAndJohnson && lowercase.includes("johnson & johnson"));
 
             return lowercase.includes("erstimpfung") && correctVaccine;
           };
@@ -82,7 +73,9 @@ function observePunctumMedico(): void {
           open(punctumMedicoBookingLink);
 
           if (config.debug) {
-            success(`[DEBUG] Punctum Medico success on ${appt[0]} with ${appt[3]}`);
+            success(
+              `[DEBUG] Punctum Medico success on ${appt[0]} with ${appt[3]}`
+            );
             log(apptObj);
           } else {
             success(`Punctum Medico success on ${appt[0]} with ${appt[3]}`);

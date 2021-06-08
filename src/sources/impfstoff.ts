@@ -56,7 +56,6 @@ function observeImpfstoff(): void {
               }
 
               notify();
-
             }
           } else {
             return;

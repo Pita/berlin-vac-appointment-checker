@@ -42,14 +42,16 @@ function observeIndividualLink(link: IndividualLink, offset = 0): void {
   const shouldCheck = config.vaccines[vaccine] && config.shot[shot];
 
   if (shouldCheck) {
-    const info = `- ${shot} shot ${chalk.magenta(vaccine)} ${bookingLink.replace("https://www.doctolib.de/", "")}`;
+    const info = `- ${shot} shot ${chalk.magenta(
+      vaccine
+    )} ${bookingLink.replace("https://www.doctolib.de/", "")}`;
     log(chalk.cyan("checking"), info);
 
     axios
       .get(updateLinkDate(xhrLink))
       .then(async function (response) {
         try {
-          const [ isSuitable, data, secondShotData ] = await hasSuitableDate(
+          const [isSuitable, data, secondShotData] = await hasSuitableDate(
             response?.data,
             xhrLink,
             secondShotXhrLink

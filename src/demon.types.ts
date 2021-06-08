@@ -37,7 +37,7 @@ export type DoctoLibResponse = {
 /**
  * a response from Doctolib after being cleaned up for display
  */
- export type FilteredDoctoLibResponse = {
+export type FilteredDoctoLibResponse = {
   /**
    * array of available appointments
    */

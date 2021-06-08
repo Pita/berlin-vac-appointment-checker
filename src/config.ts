@@ -61,7 +61,7 @@ const config = {
    * this enables more thorough logging in the console.
    * this should be unnecessary unless you are developing
    */
-  debug: true,
+  debug: false,
 };
 
 export default config;

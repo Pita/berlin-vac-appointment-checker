@@ -5,7 +5,11 @@ import playerModule from "play-sound";
 import * as path from "path";
 import chalk from "chalk";
 
-import type { DoctoLibAvailability, DoctoLibResponse, FilteredDoctoLibResponse } from "./demon.types";
+import type {
+  DoctoLibAvailability,
+  DoctoLibResponse,
+  FilteredDoctoLibResponse,
+} from "./demon.types";
 
 const player = playerModule({});
 
@@ -38,10 +42,7 @@ export function error(msg: AxiosError): void {
  * fires an error message with the current time
  */
 export function success(...msg: string[]): void {
-  console.error(
-    chalk.yellow(new Date().toISOString()),
-    chalk.green(...msg)
-  );
+  console.error(chalk.yellow(new Date().toISOString()), chalk.green(...msg));
 }
 
 /**
@@ -66,11 +67,15 @@ export function updateLinkDatePfizer(link: string): string {
  * @param data
  * @returns Partial<DoctoLibResponse>
  */
-export function filterResponse(data: DoctoLibResponse): FilteredDoctoLibResponse {
-  const availabilities = (data.availabilities || []).filter((a: DoctoLibAvailability) => a.slots.length !== 0);
+export function filterResponse(
+  data: DoctoLibResponse
+): FilteredDoctoLibResponse {
+  const availabilities = (data.availabilities || []).filter(
+    (a: DoctoLibAvailability) => a.slots.length !== 0
+  );
   const response = {
     availabilities: availabilities,
-    total: data.total
+    total: data.total,
   };
 
   return response;
@@ -83,7 +88,7 @@ export async function hasSuitableDate(
   data: DoctoLibResponse,
   xhrLink: string,
   secondShotXhrLink: string | undefined
-): Promise<[ boolean, DoctoLibResponse, DoctoLibResponse?]> {
+): Promise<[boolean, DoctoLibResponse, DoctoLibResponse?]> {
   try {
     if (data?.total) {
       if (secondShotXhrLink) {
@@ -91,7 +96,7 @@ export async function hasSuitableDate(
           await axios.get(updateLinkDatePfizer(secondShotXhrLink))
         ).data;
 
-        return [ secondShotData.total !== 0, data, secondShotData ];
+        return [secondShotData.total !== 0, data, secondShotData];
       }
     }
 
@@ -102,7 +107,7 @@ export async function hasSuitableDate(
 
       for (const availability of newData.availabilities) {
         if (availability.slots.length > 0) {
-          return [ true, newData];
+          return [true, newData];
         }
       }
     }
