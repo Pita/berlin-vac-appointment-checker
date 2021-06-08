@@ -5,7 +5,7 @@ import playerModule from "play-sound";
 import * as path from "path";
 import chalk from "chalk";
 
-import type { DoctoLibResponse } from "./demon.types";
+import type { DoctoLibAvailability, DoctoLibResponse, FilteredDoctoLibResponse } from "./demon.types";
 
 const player = playerModule({});
 
@@ -20,7 +20,7 @@ export const ONE_MINUTE = 60000;
 /**
  * fires an log message with the current time
  */
-export function log(...msg: string[]): void {
+export function log(...msg: (string | Record<string, any>)[]): void {
   console.log(chalk.yellow(new Date().toISOString()), ...msg);
 }
 
@@ -31,6 +31,16 @@ export function error(msg: AxiosError): void {
   console.error(
     chalk.yellow(new Date().toISOString()),
     chalk.red(msg.code, msg?.config?.url)
+  );
+}
+
+/**
+ * fires an error message with the current time
+ */
+export function success(...msg: string[]): void {
+  console.error(
+    chalk.yellow(new Date().toISOString()),
+    chalk.green(...msg)
   );
 }
 
@@ -52,25 +62,36 @@ export function updateLinkDatePfizer(link: string): string {
 }
 
 /**
+ * takes the response from doctolib and cleans it up for display
+ * @param data
+ * @returns Partial<DoctoLibResponse>
+ */
+export function filterResponse(data: DoctoLibResponse): FilteredDoctoLibResponse {
+  const availabilities = (data.availabilities || []).filter((a: DoctoLibAvailability) => a.slots.length !== 0);
+  const response = {
+    availabilities: availabilities,
+    total: data.total
+  };
+
+  return response;
+}
+
+/**
  * checks to see if there are dates, or if there is a second date when required
  */
 export async function hasSuitableDate(
   data: DoctoLibResponse,
   xhrLink: string,
   secondShotXhrLink: string | undefined
-): Promise<boolean> {
+): Promise<[ boolean, DoctoLibResponse, DoctoLibResponse?]> {
   try {
     if (data?.total) {
-      log("More than 0 availabilities");
-
       if (secondShotXhrLink) {
         const secondShotData = (
           await axios.get(updateLinkDatePfizer(secondShotXhrLink))
         ).data;
 
-        log("second shot data", secondShotData);
-
-        return secondShotData.total !== 0;
+        return [ secondShotData.total !== 0, data, secondShotData ];
       }
     }
 
@@ -79,12 +100,9 @@ export async function hasSuitableDate(
         await axios.get(xhrLink.replace(/\d{4}-\d{2}-\d{2}/, data.next_slot))
       ).data;
 
-      log("further checking for specific later date", xhrLink);
-
       for (const availability of newData.availabilities) {
         if (availability.slots.length > 0) {
-          log("More than one slot when requesting for new Date");
-          return true;
+          return [ true, newData];
         }
       }
     }
@@ -92,15 +110,14 @@ export async function hasSuitableDate(
     if (data?.availabilities?.length) {
       for (const availability of data.availabilities) {
         if (availability.slots.length > 0) {
-          log("More than one slot");
-          return true;
+          return [true, data];
         }
       }
     }
   } catch (e) {
     error(e);
   }
-  return false;
+  return [false, data];
 }
 
 /**

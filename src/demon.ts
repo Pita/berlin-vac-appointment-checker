@@ -12,7 +12,7 @@ import config from "./config";
 
 import { log } from "./demon.helpers";
 
-const { sources } = config;
+const { debug, sources } = config;
 
 if (sources.doctolibLinks) {
   let offset = 0;
@@ -30,9 +30,12 @@ if (sources.punctumMedicum) {
   observePunctumMedico();
 }
 
-log(chalk.green("Started checking periodically..."));
+log(chalk.cyan("Started checking periodically..."));
 log(
-  chalk.green(
+  chalk.cyan(
     "Just keep it running, it will play a sound and open a browser when an appointment opens up"
   )
 );
+if (debug) {
+  log(chalk.bgMagenta("DEBUG MODE IS ENABLED"));
+}

@@ -1,2 +1,3 @@
 export { default as individualLinks } from "./individualLinks";
-export { default as impfstoffEntries } from "./impfstoffEntries";
+export { impfstoffApiLink, impfstoffEntries } from "./impfstoff";
+export { punctumMedicoApiLink, punctumMedicoBookingLink } from "./punctumMedico";

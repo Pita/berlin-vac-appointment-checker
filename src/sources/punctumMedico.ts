@@ -1,5 +1,8 @@
 import FormData from "form-data";
 import axios, { AxiosResponse } from "axios";
+import chalk from "chalk";
+
+import { punctumMedicoApiLink, punctumMedicoBookingLink } from "../data";
 
 import {
   error,
@@ -8,6 +11,7 @@ import {
   ONE_MINUTE,
   open,
   RATE_LIMIT,
+  success,
 } from "../demon.helpers";
 
 import config from "../config";
@@ -18,20 +22,25 @@ let availabilities = false;
 function observePunctumMedico(): void {
   setTimeout(observePunctumMedico, RATE_LIMIT);
   const { shot, vaccines } = config;
+  const {
+    astrazeneca,
+    biontech,
+    johnsonAndJohnson
+  } = vaccines;
 
   const shouldCheck =
     !shot.second &&
-    (vaccines.astrazeneca || vaccines.biontech || vaccines.johnsonAndJohnson);
+    (astrazeneca || biontech || johnsonAndJohnson);
 
   if (!availabilities && shouldCheck) {
-    log("checking Punctum Medico");
+    log(chalk.cyan("checking"), "- Punctum Medico");
 
     const formData = new FormData();
     formData.append("uniqueident", "5a72efb4d3aec"); // this ID may need to be updated eventually
 
     axios
       .post(
-        "https://onlinetermine.zollsoft.de/includes/searchTermine_app_feature.php",
+        punctumMedicoApiLink,
         formData,
         {
           headers: formData.getHeaders(),
@@ -39,31 +48,50 @@ function observePunctumMedico(): void {
       )
       .then(function (response: AxiosResponse<ZollSoftResponse>) {
         response?.data?.termine.forEach(function (appt) {
+          // if they change their api this will stop working
+          const apptObj = {
+            date: appt[0],
+            time: appt[1],
+            doctor: appt[3],
+            detail: appt[4],
+          };
+
           if (!appt.length) {
             return;
           }
 
-          const matchingAppt = appt.some((detail) => {
+          const matchingAppt = (detail: string) => {
             if (!detail) {
               return;
             }
 
             const lowercase = detail.toLowerCase();
-            return lowercase.includes("erstimpfung");
-          });
 
-          if (!matchingAppt) {
+            const correctVaccine =
+              astrazeneca && lowercase.includes("astrazeneca") ||
+              biontech && lowercase.includes("biontech") ||
+              johnsonAndJohnson && lowercase.includes("johnson & johnson");
+
+            return lowercase.includes("erstimpfung") && correctVaccine;
+          };
+
+          if (!matchingAppt(apptObj.detail)) {
             return;
           }
 
-          log("Punctum Medico success", appt.join(","));
+          open(punctumMedicoBookingLink);
+
+          if (config.debug) {
+            success(`[DEBUG] Punctum Medico success on ${appt[0]} with ${appt[3]}`);
+            log(apptObj);
+          } else {
+            success(`Punctum Medico success on ${appt[0]} with ${appt[3]}`);
+          }
 
           availabilities = true;
           setTimeout(function () {
             availabilities = false;
           }, ONE_MINUTE);
-
-          open("https://punctum-medico.de/onlinetermine/");
 
           notify();
         });

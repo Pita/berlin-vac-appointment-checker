@@ -1,6 +1,6 @@
 import type { ImpfstoffEntries } from "../demon.types";
 
-const impfstoffEntries: ImpfstoffEntries = {
+export const impfstoffEntries: ImpfstoffEntries = {
   arena: {
     bookingLink:
       "https://www.doctolib.de/institut/berlin/ciz-berlin-berlin?pid=practice-158431",
@@ -35,4 +35,4 @@ const impfstoffEntries: ImpfstoffEntries = {
   },
 };
 
-export default impfstoffEntries;
+export const impfstoffApiLink = "https://api.impfstoff.link/?robot=1";

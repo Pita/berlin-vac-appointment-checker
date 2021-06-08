@@ -1,13 +1,16 @@
 import axios from "axios";
+import chalk from "chalk";
 
 import {
   error,
+  filterResponse,
   hasSuitableDate,
   log,
   notify,
   ONE_MINUTE,
   open,
   RATE_LIMIT,
+  success,
   updateLinkDate,
 } from "../demon.helpers";
 
@@ -39,21 +42,45 @@ function observeIndividualLink(link: IndividualLink, offset = 0): void {
   const shouldCheck = config.vaccines[vaccine] && config.shot[shot];
 
   if (shouldCheck) {
-    log("checking", bookingLink.replace("https://www.doctolib.de/", ""));
+    const info = `- ${shot} shot ${chalk.magenta(vaccine)} ${bookingLink.replace("https://www.doctolib.de/", "")}`;
+    log(chalk.cyan("checking"), info);
 
     axios
       .get(updateLinkDate(xhrLink))
       .then(async function (response) {
         try {
-          const isSuitable = await hasSuitableDate(
+          const [ isSuitable, data, secondShotData ] = await hasSuitableDate(
             response?.data,
             xhrLink,
             secondShotXhrLink
           );
-          if (isSuitable) {
-            log("direct success", response.data, bookingLink);
 
+          const filteredResponse = filterResponse(data);
+          let filteredSecondResponse;
+
+          if (secondShotData) {
+            filteredSecondResponse = filterResponse(data);
+          }
+
+          if (isSuitable && filteredResponse) {
             open(bookingLink);
+
+            const firstSuccessInfo = `success! ${vaccine} on ${filteredResponse.availabilities[0].date}`;
+            const secondSuccessInfo = ` - with a second shot on ${filteredSecondResponse?.availabilities[0].date}`;
+
+            if (config.debug) {
+              success(`[DEBUG] ${firstSuccessInfo}`, info);
+              log(filteredResponse);
+              if (filteredSecondResponse) {
+                success(`[DEBUG]`, secondSuccessInfo);
+                log(filteredSecondResponse);
+              }
+            } else {
+              success(firstSuccessInfo, info);
+              if (filteredSecondResponse) {
+                success(secondSuccessInfo);
+              }
+            }
 
             notify();
 
