@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from "axios";
-import { impfstoffEntries } from "../data";
-
+import { impfstoffApiLink, impfstoffEntries } from "../data";
+import chalk from "chalk";
 import {
   error,
   log,
@@ -8,6 +8,7 @@ import {
   ONE_MINUTE,
   open,
   RATE_LIMIT,
+  success,
 } from "../demon.helpers";
 
 import config from "../config";
@@ -20,16 +21,16 @@ import type { ImpfstoffResponse } from "../demon.types";
  */
 let recentlyOpened = false;
 function observeImpfstoff(): void {
-  const { shot, vaccines } = config;
+  const { debug, shot, vaccines } = config;
 
   /**
    * we check for second shot since all vaccination centers only do both shots
    */
   if (!recentlyOpened && !shot.second) {
-    log("checking impfstoff.link");
+    log(chalk.cyan("checking"), "- impfstoff.link");
 
     axios
-      .get("https://api.impfstoff.link/?robot=1")
+      .get(impfstoffApiLink)
       .then(function (response: AxiosResponse<ImpfstoffResponse>) {
         response?.data?.stats.forEach(function (stat) {
           if (stat.open === false) {
@@ -45,10 +46,16 @@ function observeImpfstoff(): void {
              */
             if (vaccines[vaccine] || (vaccine2 && vaccines[vaccine2])) {
               open(bookingLink);
+              const info = `Success! - ${vaccine} at ${stat.name}`;
+
+              if (debug) {
+                success("[DEBUG] ", info);
+                log(stat);
+              } else {
+                success(info);
+              }
 
               notify();
-
-              log("impfstuff success", stat.id);
             }
           } else {
             return;

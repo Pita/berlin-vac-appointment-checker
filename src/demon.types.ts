@@ -1,7 +1,7 @@
 /**
  * a single date of apointments and all slots on that day
  */
-type DoctoLibAvailability = {
+export type DoctoLibAvailability = {
   /**
    * yyyy-mm-dd string of the date of the availabilitsavailable
    */
@@ -35,6 +35,21 @@ export type DoctoLibResponse = {
 };
 
 /**
+ * a response from Doctolib after being cleaned up for display
+ */
+export type FilteredDoctoLibResponse = {
+  /**
+   * array of available appointments
+   */
+  availabilities: DoctoLibAvailability[];
+
+  /**
+   * total number of  availabilities returned
+   */
+  total: number;
+};
+
+/**
  * the response from a single vaccination center
  */
 export type ImpstoffAvailability = {
@@ -42,6 +57,11 @@ export type ImpstoffAvailability = {
    * id to which vaccination center
    */
   id: string;
+
+  /**
+   * human readable name of the vaccination center
+   */
+  name: string;
 
   /**
    * whether or not there are open appoinments
